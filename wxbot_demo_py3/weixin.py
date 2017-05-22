@@ -1016,7 +1016,7 @@ class WebWeixin(object):
             listenProcess.start()
 
         while True:
-            text = input('')
+            text = input('> ')
             if text == 'quit':
                 listenProcess.terminate()
                 print('[*] 退出微信')
