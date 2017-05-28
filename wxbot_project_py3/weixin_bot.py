@@ -32,6 +32,7 @@ wechat.msg_handler = wechat_msg_processor
 wechat_msg_processor.wechat = wechat
 
 PORT = int(cm.get('setting', 'server_port'))
+HOST = cm.get('setting', 'server_host')
 app = Flask(__name__, template_folder='flask_templates')
 app.config['UPLOAD_FOLDER'] = cm.getpath('uploaddir')
 
@@ -129,6 +130,7 @@ def send_msg(to, msg):
     @param      to: String, user id or group id
     @param      msg: String, words
     """
+    if len(msg) > 300: msg = msg[:300]
     return jsonify({'ret': 0 if wechat.send_text(to, msg) else 1})
 
 
@@ -244,7 +246,7 @@ def mass_send_file():
 
 
 def run_server():
-    app.run(port=PORT)
+    app.run(host=HOST, port=PORT)
 
 if cm.get('setting', 'server_mode') == 'True':
     serverProcess = threading.Thread(target=run_server)
